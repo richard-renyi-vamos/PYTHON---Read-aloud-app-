@@ -1,0 +1,38 @@
+import tkinter as tk
+from gtts import gTTS
+import os
+
+def read_aloud():
+    text = text_entry.get("1.0", tk.END).strip()
+    language = language_var.get()
+    
+    if text:
+        tts = gTTS(text=text, lang=language)
+        tts.save("output.mp3")
+        os.system("mpg321 output.mp3")  # For Linux
+        # os.system("afplay output.mp3")  # For MacOS
+        # os.system("start output.mp3")  # For Windows
+
+# Create the main window
+root = tk.Tk()
+root.title("Text-to-Speech")
+
+# Text Entry
+text_entry = tk.Text(root, height=10, width=50)
+text_entry.pack()
+
+# Language Selection
+language_var = tk.StringVar()
+language_var.set("en")  # Default language is English
+
+language_options = [("English", "en"), ("German", "de"), ("Hungarian", "hu")]
+
+for text, language_code in language_options:
+    language_radio = tk.Radiobutton(root, text=text, variable=language_var, value=language_code)
+    language_radio.pack()
+
+# Button to Read Aloud
+read_button = tk.Button(root, text="Read Aloud", command=read_aloud)
+read_button.pack()
+
+root.mainloop()
